@@ -1,6 +1,6 @@
 
 - name: Disable argocd apps automated sync
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl patch application -n {{ fact_argo_merged_config.namespace }} root-deployer --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
     for app in dns-utils capi-post-config capi vault vault-post-config gitlab-pre netbird-pre zitadel-pre gitlab gitlab-post-config nexus \
@@ -12,12 +12,13 @@
   ignore_errors: true
 
 - name: Remove gitlab post-config resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete rdscluster -n gitlab --ignore-not-found=true --all
     kubectl delete -n argocd application gitlab-post-config --ignore-not-found  2>&1 &
     for resource in \
       "xgitlabpostconfig" \
+      "gitlabpostconfig" \
       "XProject" \
       "AccessToken" \
       "workspaces.tf.upbound.io" \
@@ -31,7 +32,7 @@
   ignore_errors: true
 
 - name: Remove gitlab and pre resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete -n argocd application gitlab --ignore-not-found
     kubectl delete -n argocd application gitlab-pre --ignore-not-found 2>&1 &
@@ -41,7 +42,7 @@
   ignore_errors: true
 
 - name: Remove monitoring resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete -n argocd application monitoring-post-config --ignore-not-found
     kubectl delete -n argocd application monitoring --ignore-not-found
@@ -56,7 +57,7 @@
   ignore_errors: true
 
 - name: Remove nexus resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete -n argocd application nexus-post-config --ignore-not-found
     kubectl delete -n argocd application nexus --ignore-not-found
@@ -66,7 +67,7 @@
   ignore_errors: true
 
 - name: Remove netbird operator resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete -n argocd application netbird-operator --ignore-not-found > /dev/null 2>&1 &
     for resource in \
@@ -81,7 +82,7 @@
     sleep 30
 
 - name: Remove netbird resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete rdscluster -n netbird --ignore-not-found=true --all
     kubectl delete -n argocd application netbird-post-config --ignore-not-found > /dev/null 2>&1 &
@@ -105,7 +106,7 @@
   ignore_errors: true
 
 - name: Remove dns resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete awsroute53record -n ext-dns ceph-objectstore-rgw --ignore-not-found=true
   args:
@@ -113,7 +114,7 @@
   ignore_errors: true
 
 - name: Remove zitadel resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete rdscluster -n zitadel --ignore-not-found=true --all
     kubectl get workspaces.tf.upbound.io -n zitadel -o json 2>/dev/null | jq -r '.items[].metadata.name' | \
@@ -126,7 +127,7 @@
   ignore_errors: true
 
 - name: Remove vault resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete -n argocd application vault-post-config --ignore-not-found
     kubectl delete -n argocd application vault --ignore-not-found 2>&1 &
@@ -135,7 +136,7 @@
   ignore_errors: true
 
 - name: Remove storage resources
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete -n argocd application storage-post-config --ignore-not-found 2>&1 &
     kubectl get XObjectSyncer -n {{ fact_storage_namespace }} -o json 2>/dev/null | jq -r '.items[].metadata.name' | \
@@ -182,7 +183,7 @@
 #   ignore_errors: true
 
 - name: Delete sc cluster before infra teardown
-  shell: |
+  ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
     kubectl delete cluster.cluster.x-k8s.io -n {{ fact_capi_cluster_namespace }} {{ fact_capi_cluster_name }} --ignore-not-found=true
     sleep 60
