@@ -12,9 +12,9 @@
     path: /etc/netbird/config.json
     state: absent
 
-- name: Remove Netbird and WireGuard packages
+- name: remove netbird package
   become: true
-  package:
+  ansible.builtin.package:
     name:
       - wireguard
       - netbird={{ netbird_version }}
