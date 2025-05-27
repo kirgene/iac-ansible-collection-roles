@@ -294,8 +294,14 @@ argocd_default:
       application_gitrepo_tag: "vexp-cck8s19"
       sync_wave: "'-5'"
       sub_apps:
+        pre:
+          app_name: "pre"
+          helm_version: "7.2.1"
+          namespace: "velero"
+          sub_app_enabled: "true"
+          sync_wave: "'-6'"
         velero:
-          app_name: "velero"
+          app_name: "pre"
           helm_version: "7.2.1"
           namespace: "velero"
           sub_app_enabled: "true"
@@ -308,10 +314,7 @@ argocd_default:
           object_storage_secret_key: "cloud"
           object_storage_bucket: "velero"
           plugin_version: "v1.10.1"
-        pre:
-          app_name: "pre"
-          sub_app_enabled: "true"
-          sync_wave: "'-6'"
+          sync_wave: "'-5'"
         post_config:
           app_name: "post-config"
           sub_app_enabled: "true"
