@@ -287,8 +287,8 @@ argocd_default:
           vault_k8s_admin_auth_path: "admin-k8s"
           vault_k8s_admin_role_name: "admin-role"
 
-    maintenance:
-      argocd_app_name: "maintenance"
+    velero:
+      argocd_app_name: "velero"
       app_namespace: "argocd"
       app_enabled: "true"
       application_gitrepo_tag: "vexp-cck8s19"
