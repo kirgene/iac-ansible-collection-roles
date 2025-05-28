@@ -1,4 +1,3 @@
-#Create a temporary directory for storing values files or other config
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: yes
