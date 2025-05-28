@@ -31,7 +31,7 @@
     - netbird={{ fact_netbird_version }}
 
 - name: Create temporary directory for cc boot
-  tempansible.builtin.file:
+  ansible.builtin.tempfile:
     state: directory
     suffix: values
   register: cctmpvalues
