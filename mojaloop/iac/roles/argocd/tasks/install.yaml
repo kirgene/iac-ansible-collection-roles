@@ -1,4 +1,13 @@
 #Create a temporary directory for storing values files or other config
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install jq package
+  ansible.builtin.package:
+    name: jq
+    state: present
+
 - name: install kubectl
   ansible.builtin.get_url:
     url: https://storage.googleapis.com/kubernetes-release/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl
