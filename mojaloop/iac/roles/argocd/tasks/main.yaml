@@ -1,7 +1,7 @@
 - name: install
-  import_tasks: install.yaml
+  ansible.builtin.import_tasks: install.yaml
   when: (not (teardown | bool))
 
 - name: remove microk8s
-  import_tasks: teardown.yaml
+  ansible.builtin.import_tasks: teardown.yaml
   when: (teardown | bool)
