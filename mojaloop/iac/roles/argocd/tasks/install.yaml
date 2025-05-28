@@ -76,18 +76,11 @@
     - namespace
     - vault-service-account-etc
     - vault-env
-    #- netclient
     - argo-oidc-secrets
     - argocd-server-patch
     - argocd-cmd-params-cm-patch
     - k8s-oidc-rbac
     - coredns-nodecache
-    #- coredns-values
-
-# - name: Install coredns
-#   shell: |
-#     helm repo add coredns https://coredns.github.io/helm
-#     helm --kubeconfig {{ kubeconfig_location }}/kubeconfig upgrade --install coredns coredns/coredns --version {{ coredns_version }} -n kube-system --create-namespace -f {{ argotmpvalues.path }}/coredns-values.yaml
 
 - name: Install coredns-nodecache
   ansible.builtin.shell: |
