@@ -19,6 +19,14 @@
     executable: /bin/bash
   ignore_errors: true
 
+- name: Remove moja test app
+  ansible.builtin.shell: |
+    export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
+    kubectl delete -n argocd application mojaloop-test --ignore-not-found
+  args:
+    executable: /bin/bash
+  ignore_errors: true
+
 - name: Remove mcm app
   ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
