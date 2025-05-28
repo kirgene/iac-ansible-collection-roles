@@ -1,7 +1,7 @@
 # for on premise installations
-- name: Reset microk8s
+- name: Stop microk8s
   become: true
-  ansible.builtin.command: "microk8s reset"
+  ansible.builtin.command: "microk8s stop"
   ignore_errors: true
 
 - name: Remove microk8s
@@ -9,28 +9,44 @@
   ansible.builtin.command: "snap remove --purge microk8s"
   ignore_errors: true
 
-- name: Remove microk8s data
+- name: Remove microk8s data directories
   become: true
   ansible.builtin.file:
     state: absent
-    path: "{{ microk8s_root_path }}"
+    path: "{{ item }}"
+  loop: "{{ microk8s_root_paths }}"
 
-- name: Remove longhorn data
+- name: Flush all iptables rules
   become: true
-  ansible.builtin.file:
-    state: absent
-    path: "{{ longhorn_data_path }}"
+  ansible.builtin.shell: |
+    iptables -F
+    iptables -t nat -F
+    iptables -t mangle -F
+    iptables -X
 
-- name: Remove rook data
+- name: Delete all cali* network interfaces
   become: true
-  ansible.builtin.file:
-    state: absent
-    path: "{{ rook_data_path }}"
+  ansible.builtin.shell: |
+    for intf in $(ip -o link | grep cali | awk -F': ' '{print $2}'); do
+      ip link delete "$intf" || true
+    done
 
-- name: reset rook vol
-  become: true
-  shell: |
-    wipefs -a {{ rook_disk_vol }}
-    dd if=/dev/zero of="{{ rook_disk_vol }}" bs=1M count=100 oflag=direct,dsync
-    partprobe {{ rook_disk_vol }}
-  when: enable_rook_disk_reset | bool
+# - name: Remove longhorn data
+#   become: true
+#   ansible.builtin.file:
+#     state: absent
+#     path: "{{ longhorn_data_path }}"
+
+# - name: Remove rook data
+#   become: true
+#   ansible.builtin.file:
+#     state: absent
+#     path: "{{ rook_data_path }}"
+
+# - name: reset rook vol
+#   become: true
+#   shell: |
+#     wipefs -a {{ rook_disk_vol }}
+#     dd if=/dev/zero of="{{ rook_disk_vol }}" bs=1M count=100 oflag=direct,dsync
+#     partprobe {{ rook_disk_vol }}
+#   when: enable_rook_disk_reset | bool
