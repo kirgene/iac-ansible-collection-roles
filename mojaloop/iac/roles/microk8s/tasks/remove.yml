@@ -1,15 +1,15 @@
 # for on premise installations
-- name: Stop microk8s
+- name: Stop microk8s services
   become: true
   ansible.builtin.command: "microk8s stop"
   ignore_errors: true
 
-- name: Remove microk8s
+- name: Remove microk8s snap package
   become: true
   ansible.builtin.command: "snap remove --purge microk8s"
   ignore_errors: true
 
-- name: Remove microk8s data directories
+- name: Remove microk8s & k8s data directories
   become: true
   ansible.builtin.file:
     state: absent
@@ -28,9 +28,6 @@
   become: true
   ansible.builtin.shell: |
     for intf in $(ip -o link | grep cali | awk -F': ' '{print $2}'); do
-      ip link delete "$intf" || true
-    done
-    for intf in $(ip -o link | grep wt | awk -F': ' '{print $2}'); do
       ip link delete "$intf" || true
     done
     for intf in $(ip -o link | grep nodecache | awk -F': ' '{print $2}'); do
