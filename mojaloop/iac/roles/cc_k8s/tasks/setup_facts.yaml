@@ -1,10 +1,10 @@
 #Create a temporary directory for storing values files or other config
 - name: merge argo dictionaries
-  set_fact:
+  ansible.builtin.set_fact:
     fact_argo_merged_config: "{{ argocd_default | ansible.builtin.combine(argocd_override, recursive=true) }}"
 
 - name: set argo facts
-  set_fact:
+  ansible.builtin.set_fact:
     fact_argocd_helm_namespace: "{{ fact_argo_merged_config.apps['utils'].sub_apps['argocd_helm'].namespace }}"
     fact_argocd_helm_release: "{{ fact_argo_merged_config.apps['utils'].sub_apps['argocd_helm'].app_name }}"
     fact_argocd_helm_version: "{{ fact_argo_merged_config.apps['utils'].sub_apps['argocd_helm'].helm_version }}"
@@ -27,7 +27,7 @@
     fact_kubernetes_oidc_groups_claim: "{{ fact_argo_merged_config.apps['security'].sub_apps['zitadel'].zitadel_grant_prefix }}"
     fact_netbird_management_url: "https://netbird.{{ fact_argo_merged_config.apps['dns_utils'].sub_apps['cr_config'].dns_public_subdomain }}:443"
     fact_environment_list: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['config'].environment_list.split(',') }}"
-    fact_rook_ceph_namespace: "{{ fact_argo_merged_config.apps['utils'].sub_apps['capi'].capi_rook_ceph_namespace }}"
+    fact_storage_namespace: "{{ fact_argo_merged_config.apps['utils'].sub_apps['storage'].namespace }}"
     fact_capi_cluster_namespace: "{{ fact_argo_merged_config.apps['utils'].sub_apps['capi'].capi_cluster_namespace }}"
     fact_capi_cluster_name: "{{ fact_argo_merged_config.apps['utils'].sub_apps['capi'].capi_cluster_name }}"
     fact_cloud_platform: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].cloud_platform }}"
@@ -35,31 +35,31 @@
     fact_cloud_provider: "{{ fact_argo_merged_config.apps['utils'].sub_apps['capi'].cloud_provider }}"
 
 - name: set gitlab domain to public
-  set_fact:
+  ansible.builtin.set_fact:
     fact_gitlab_fqdn: "gitlab.{{ fact_dns_public_subdomain }}"
   when: fact_argo_merged_config.apps['gitlab'].sub_apps['gitlab'].public_ingress_access_domain | bool
 
 - name: set gitlab domain fact
-  set_fact:
+  ansible.builtin.set_fact:
     fact_gitlab_fqdn: "gitlab.{{ fact_dns_private_subdomain }}"
   when: not (fact_argo_merged_config.apps['gitlab'].sub_apps['gitlab'].public_ingress_access_domain | bool)
 
 - name: set zitadel domain to public
-  set_fact:
+  ansible.builtin.set_fact:
     fact_zitadel_fqdn: "zitadel.{{ fact_dns_public_subdomain }}"
   when: fact_argo_merged_config.apps['security'].sub_apps['zitadel'].public_ingress_access_domain | bool
 
 - name: set zitadel domain fact
-  set_fact:
+  ansible.builtin.set_fact:
     fact_zitadel_fqdn: "zitadel.{{ fact_dns_private_subdomain }}"
   when: not (fact_argo_merged_config.apps['security'].sub_apps['zitadel'].public_ingress_access_domain | bool)
 
 - name: set netbird domain to public
-  set_fact:
+  ansible.builtin.set_fact:
     fact_netbird_fqdn: "netbird.{{ fact_dns_public_subdomain }}"
   when: fact_argo_merged_config.apps['security'].sub_apps['netbird'].public_ingress_access_domain | bool
 
 - name: set netbird domain fact
-  set_fact:
+  ansible.builtin.set_fact:
     fact_netbird_fqdn: "netbird.{{ fact_dns_private_subdomain }}"
   when: not (fact_argo_merged_config.apps['security'].sub_apps['netbird'].public_ingress_access_domain | bool)

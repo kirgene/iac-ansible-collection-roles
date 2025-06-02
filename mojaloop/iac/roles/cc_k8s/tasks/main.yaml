@@ -1,14 +1,14 @@
 - name: set facts
-  import_tasks: setup_facts.yaml
+  ansible.builtin.import_tasks: setup_facts.yaml
 
 - name: setup
-  import_tasks: setup_prerequisites.yaml
+  ansible.builtin.import_tasks: setup_prerequisites.yaml
   when: (not (teardown | bool))
 
 - name: install
-  import_tasks: install.yaml
+  ansible.builtin.import_tasks: install.yaml
   when: (not (teardown | bool))
 
 - name: remove microk8s
-  import_tasks: teardown.yaml
+  ansible.builtin.import_tasks: teardown.yaml
   when: (teardown | bool)

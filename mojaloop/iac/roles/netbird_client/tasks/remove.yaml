@@ -14,7 +14,7 @@
 
 - name: Remove Netbird and WireGuard packages
   become: true
-  package:
+  ansible.builtin.package:
     name:
       - wireguard
       - netbird={{ netbird_version }}
