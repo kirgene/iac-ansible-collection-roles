@@ -148,40 +148,6 @@
     executable: /bin/bash
   ignore_errors: true
 
-# - name: Delete resources before infra teardown
-#   shell: |
-#     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
-#     kubectl patch application -n {{ fact_argo_merged_config.namespace }} root-deployer --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
-#     kubectl patch application -n {{ fact_argo_merged_config.namespace }} capi-post-config --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
-#     kubectl patch application -n {{ fact_argo_merged_config.namespace }} capi --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
-
-#     kubectl patch application -n {{ fact_argo_merged_config.namespace }} dns-utils --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
-#     kubectl delete awsroute53record -n ext-dns ceph-objectstore-rgw --ignore-not-found=true
-
-#     # kubectl patch application -n {{ fact_argo_merged_config.namespace }} vault-post-config --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
-#     # kubectl patch application -n {{ fact_argo_merged_config.namespace }} gitlab-pre --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
-#     # kubectl patch application -n {{ fact_argo_merged_config.namespace }} netbird-pre --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
-#     # kubectl patch application -n {{ fact_argo_merged_config.namespace }} zitadel-pre --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
-#     # kubectl delete workspaces.tf.upbound.io vault-{{ dynamic_secret_platform }}-post-config
-#     # kubectl delete workspaces.tf.upbound.io vault-post-config
-#     # kubectl delete rdsaurorareplicaclaims.infitx.org  -n {{ fact_argo_merged_config.apps['gitlab'].sub_apps['gitlab'].namespace }} --ignore-not-found=true --all
-#     # kubectl delete rdsauroradbclusterclaims.infitx.org  -n {{ fact_argo_merged_config.apps['gitlab'].sub_apps['gitlab'].namespace }} --ignore-not-found=true --all
-#     # kubectl delete rdsdbclusterclaims.infitx.org  -n {{ fact_argo_merged_config.apps['gitlab'].sub_apps['gitlab'].namespace }} --ignore-not-found=true --all
-
-#     # kubectl delete s3bucketclaims.infitx.org  -n {{ fact_argo_merged_config.apps['gitlab'].sub_apps['gitlab'].namespace }} --ignore-not-found=true --all
-
-#     # kubectl delete rdsaurorareplicaclaims.infitx.org -n {{ fact_argo_merged_config.apps['security'].sub_apps['zitadel'].namespace }} --ignore-not-found=true --all
-#     # kubectl delete rdsauroradbclusterclaims.infitx.org -n {{ fact_argo_merged_config.apps['security'].sub_apps['zitadel'].namespace }} --ignore-not-found=true --all
-#     # kubectl delete rdsdbclusterclaims.infitx.org -n {{ fact_argo_merged_config.apps['security'].sub_apps['zitadel'].namespace }} --ignore-not-found=true --all
-
-#     # kubectl delete rdsaurorareplicaclaims.infitx.org -n {{ fact_argo_merged_config.apps['security'].sub_apps['netbird'].namespace }} --ignore-not-found=true --all
-#     # kubectl delete rdsauroradbclusterclaims.infitx.org -n {{ fact_argo_merged_config.apps['security'].sub_apps['netbird'].namespace }} --ignore-not-found=true --all
-#     # kubectl delete rdsdbclusterclaims.infitx.org -n {{ fact_argo_merged_config.apps['security'].sub_apps['netbird'].namespace }} --ignore-not-found=true --all
-#     # sleep 600
-#   args:
-#     executable: /bin/bash
-#   ignore_errors: true
-
 - name: Delete sc cluster before infra teardown
   ansible.builtin.shell: |
     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
@@ -190,40 +156,3 @@
   args:
     executable: /bin/bash
   ignore_errors: true
-# - name: Tear down ceph cluster
-#   ansible.builtin.shell: |
-#     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
-#     kubectl patch application -n {{ fact_argo_merged_config.namespace }} rook-ceph --type json --patch='[ { "op": "remove", "path": "/spec/syncPolicy/automated" } ]' || true
-#     kubectl config set-context --current --namespace {{ fact_rook_ceph_namespace }}
-#     kubectl -n {{ fact_rook_ceph_namespace }} scale deployment rook-ceph-operator --replicas=0
-#     for CRD in $(kubectl get crd -n {{ fact_rook_ceph_namespace }} | awk '/ceph.rook.io/ {print $1}'); do kubectl get -n {{ fact_rook_ceph_namespace }} "$CRD" -o name | xargs -I {} kubectl patch -n {{ fact_rook_ceph_namespace }} {} --type merge -p '{"metadata":{"finalizers": []}}';done
-#     kubectl delete cephobjectstore ceph-objectstore --ignore-not-found=true -n {{ fact_rook_ceph_namespace }}
-#     kubectl delete cephfilesystem ceph-filesystem --ignore-not-found=true -n {{ fact_rook_ceph_namespace }}
-#     kubectl delete cephblockpool ceph-blockpool --ignore-not-found=true -n {{ fact_rook_ceph_namespace }}
-#     kubectl delete cephcluster rook-ceph --ignore-not-found=true -n {{ fact_rook_ceph_namespace }}
-#     #sleep 300  # Wait for 300 seconds
-#   args:
-#     executable: /bin/bash
-#   ignore_errors: true
-# - name: Sleep for 300 seconds and continue with play
-#   ansible.builtin.wait_for:
-#     timeout: 300
-# - name: Pause to finish resources deletion
-#   ansible.builtin.pause:
-#     seconds: 300
-# - name: Wait for vault to be gone
-#   shell: |
-#     export KUBECONFIG={{ kubeconfig_location }}/kubeconfig
-#     kubectl patch workspace netbird-pre-config --type json --patch='[ { "op": "remove", "path": "/metadata/finalizers" } ]' || true
-#     kubectl patch workspace zitadel-post-config --type json --patch='[ { "op": "remove", "path": "/metadata/finalizers" } ]' || true
-#     kubectl patch workspace zitadel-argocd-oidc-config --type json --patch='[ { "op": "remove", "path": "/metadata/finalizers" } ]' || true
-#     kubectl patch workspace zitadel-vault-oidc-config --type json --patch='[ { "op": "remove", "path": "/metadata/finalizers" } ]'  || true
-#     export zitadel_pvcs=$(kubectl get pvcs -n zitadel --no-headers -o custom-columns=":metadata.name") || true
-#     for n in $zitadel_pvcs; do kubectl patch -n zitadel pvc $n --type json --patch='[ { "op": "remove", "path": "/metadata/finalizers" } ]' ; done || true
-#     kubectl patch workspace vault-post-config --type json --patch='[ { "op": "remove", "path": "/metadata/finalizers" } ]' || true
-#     kubectl --kubeconfig {{ kubeconfig_location }}/kubeconfig get application -n {{ fact_argo_merged_config.namespace }} vault
-#   register: outputapp
-#   until: outputapp is failed
-#   retries: 100
-#   delay: 30
-#   ignore_errors: true
