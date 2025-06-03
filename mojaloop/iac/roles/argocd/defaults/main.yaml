@@ -14,7 +14,7 @@ netmaker_image_version: "0.24.0"
 wireguard_node_port: "31821"
 cluster_name: envname
 kubeconfig_local_location: "/tmp"
-kustomize_version: "5.4.2"
+kustomize_version: "5.6.0"
 kubectl_version: "1.31.0"
 coredns_version: "1.28.2"
 coredns_max_scale: 10
