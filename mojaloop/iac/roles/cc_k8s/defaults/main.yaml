@@ -316,7 +316,6 @@ argocd_default:
           object_storage_backend_path: "cc-cloud-provider-os"
           object_storage_secret_name: "cloud-credentials"
           object_storage_secret_key: "cloud"
-          object_storage_bucket: "velero"
           plugin_version: "v1.10.1"
           sync_wave: "'-5'"
         post_config:
