@@ -3,7 +3,7 @@ pipeline_executor: false
 kubeconfig_location: "/root/.kube"
 kustomize_version: "5.4.2"
 kubectl_version: "1.31.0"
-argocd_cli_version: "2.11.3"
+argocd_cli_version: "3.0.5"
 clusterctl_version: "1.9.5"
 cluster_name: envname
 kubeconfig_local_location: "/tmp"
@@ -13,7 +13,7 @@ cluster_cloud_provider: "aws"
 dynamic_secret_platform: "aws"
 netbird_build_server_client_version: "0.39.2"
 install_coredns: true
-coredns_localcache_version: "1.11.3"
+coredns_localcache_version: "1.12.1"
 dns_bind_address: "169.254.20.10"
 #argo
 argocd_override:
@@ -306,7 +306,7 @@ argocd_default:
           sub_app_enabled: "true"
           sync_wave: "'-6'"
         velero:
-          app_name: "pre"
+          app_name: "velero"
           helm_version: "7.2.1"
           namespace: "velero"
           sub_app_enabled: "true"
@@ -314,8 +314,7 @@ argocd_default:
           enable_object_storage_backend: "'false'"
           object_storage_access_role: "object-storage-access"
           object_storage_backend_path: "cc-cloud-provider-os"
-          object_storage_region: "none"
-          object_storage_secret_name: "velero-cloud-api-secret"
+          object_storage_secret_name: "cloud-credentials"
           object_storage_secret_key: "cloud"
           object_storage_bucket: "velero"
           plugin_version: "v1.10.1"
