@@ -115,7 +115,7 @@ spec:
               value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_platform_db_name }}"
 
             - name: "db_username"
-              value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_platform_db_username }}"
+              value: "{{ '{{' }} .common_platform_db.external_resource_config.username {{ '}}'}}"
 
             - name: "dbdeploy_name_prefix"
               value: "{{ env_name }}-{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_platform_dbdeploy_name_prefix }}"
@@ -328,7 +328,7 @@ spec:
               value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_mojaloop_db_name }}"
 
             - name: "db_username"
-              value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_mojaloop_db_username }}"
+              value:  "{{ '{{' }} .common_mojaloop_db.external_resource_config.username {{ '}}'}}"
 
             - name: "dbdeploy_name_prefix"
               value: "{{ env_name }}-{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_mojaloop_dbdeploy_name_prefix }}"
