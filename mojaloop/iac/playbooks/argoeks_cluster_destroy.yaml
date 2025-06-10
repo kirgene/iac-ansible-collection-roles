@@ -1,10 +1,7 @@
-# fix later
+# add eks related clean up steps
+
 - hosts: bastion
   become: true
   vars:
     teardown: true
-
-  tasks:
-    - name: "This is a dummy task"
-      debug:
-        msg: "Running dummy task... nothing to do here!"
+  roles: []
