@@ -123,11 +123,11 @@ spec:
             - name: "cloud_region"
               value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].cloud_region }}"
             - name: "common_platform_db_secret_name"
-              value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_platform_db_secret }}"
+              value: "{{ env_name }}-{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_platform_db_secret }}"
             - name: "common_mojaloop_db_secret_name"
-              value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_mojaloop_db_secret }}"
+              value: "{{ env_name }}-{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_mojaloop_db_secret }}"
             - name: "common_mongodb_secret_name"
-              value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_mongodb_secret }}"
+              value: "{{ env_name }}-{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_mongodb_secret }}"
             - name: common_platform_db_external_name_service
               value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_platform_externalservice_name }}"
             - name: common_mojaloop_db_external_name_service

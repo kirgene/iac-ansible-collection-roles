@@ -106,7 +106,7 @@ spec:
               value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard_common_mongodb_documentdb_provider'].cloud_region }}"
 
             - name: "db_secret"
-              value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_mongodb_secret }}"
+              value: "{{ env_name }}-{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].common_mongodb_secret }}"
 
             - name: "db_name"
               value: "{{ '{{' }} .common_mongodb.external_resource_config.db_name {{ '}}'}}"

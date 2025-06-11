@@ -4,5 +4,4 @@
   become: true
   vars:
     teardown: true
-  roles:
-    - mojaloop.iac.netbird_client
+  roles: []
