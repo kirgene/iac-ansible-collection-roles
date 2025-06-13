@@ -366,6 +366,12 @@ spec:
             - name: "pxc_image"
               value: "{{ '{{' }} .common_mojaloop_db.dbaas_resource_config.pxc_image {{ '}}' }}"
 
+            - name: "pxc_volume_spec"
+              value: "{{ '{{' }} .common_mojaloop_db.dbaas_resource_config.pxc_volume_spec | toJSON {{ '}}' }}"
+
+            - name: "pxc_annotations"
+              value: "{{ '{{' }} .common_mojaloop_db.dbaas_resource_config.pxc_annotations | toJSON {{ '}}' }}"
+
             - name: "percona_cluster_name"
               value: "{{ '{{' }} .common_mojaloop_db.dbaas_resource_config.cluster_name {{ '}}' }}"
 
@@ -440,6 +446,9 @@ spec:
 
             - name: "backup_retention"
               value: "{{ '{{' }} .common_mojaloop_db.dbaas_resource_config.backup_retention {{ '}}' }}"
+
+            - name: "backup_pvc"
+              value: "{{ '{{' }} .common_mojaloop_db.dbaas_resource_config.backup_pvc | toJSON {{ '}}' }}"
 
             - name: "region"
               value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].cloud_region }}"
