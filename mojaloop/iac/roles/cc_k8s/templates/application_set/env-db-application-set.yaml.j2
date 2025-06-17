@@ -367,10 +367,10 @@ spec:
               value: "{{ '{{' }} .common_mojaloop_db.dbaas_resource_config.pxc_image {{ '}}' }}"
 
             - name: "pxc_volume_spec"
-              value: "{{ '{{' }} ternary \"\" (index(.common_mojaloop_db.dbaas_resource_config \"pxc_volume_spec\") | toRawJson) (empty (index .common_mojaloop_db.dbaas_resource_config \"pxc_volume_spec\")) {{ '}}' }}"
+              value: "{{ '{{' }} ternary \"\" (index .common_mojaloop_db.dbaas_resource_config \"pxc_volume_spec\") | toRawJson) (empty (index .common_mojaloop_db.dbaas_resource_config \"pxc_volume_spec\")) {{ '}}' }}"
 
             - name: "pxc_annotations"
-              value: "{{ '{{' }} ternary \"\" (index(.common_mojaloop_db.dbaas_resource_config \"pxc_annotations\") | toRawJson) (empty (index .common_mojaloop_db.dbaas_resource_config \"pxc_annotations\")) {{ '}}' }}"
+              value: "{{ '{{' }} ternary \"\" (index .common_mojaloop_db.dbaas_resource_config \"pxc_annotations\") | toRawJson) (empty (index .common_mojaloop_db.dbaas_resource_config \"pxc_annotations\")) {{ '}}' }}"
 
             - name: "percona_cluster_name"
               value: "{{ '{{' }} .common_mojaloop_db.dbaas_resource_config.cluster_name {{ '}}' }}"
@@ -448,7 +448,7 @@ spec:
               value: "{{ '{{' }} .common_mojaloop_db.dbaas_resource_config.backup_retention {{ '}}' }}"
 
             - name: "backup_pvc"
-              value: "{{ '{{' }} ternary \"\" (index(.common_mojaloop_db.dbaas_resource_config \"backup_pvc\") | toRawJson) (empty (index .common_mojaloop_db.dbaas_resource_config \"backup_pvc\")) {{ '}}' }}"
+              value: "{{ '{{' }} ternary \"\" (index .common_mojaloop_db.dbaas_resource_config \"backup_pvc\") | toRawJson) (empty (index .common_mojaloop_db.dbaas_resource_config \"backup_pvc\")) {{ '}}' }}"
 
             - name: "region"
               value: "{{ fact_argo_merged_config.apps['deploy_env'].sub_apps['onboard'].cloud_region }}"
